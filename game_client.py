@@ -1,11 +1,10 @@
 import itertools
 import random
 
-from nicegui import ui
+from nicegui import ui, app
 from nicegui.binding import bindings
 
 from game_core import Pairs
-
 
 class GameClient:
     def __init__(self):
@@ -67,6 +66,21 @@ def start_game():
                                                                        'transform: translate(-50%, -50%);'
                                                                        )
 
+class Pairs_Card_Toggle(ui.button):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._state = False
+        self.on('click', self.toggle)
+
+    def toggle(self) -> None:
+        self._state = not self._state
+        self.update()
+
+    def update(self) -> None:
+        self.props(f'icon={"/assets/img/back@2x.png" if self._state else "card_image"}')
+        super().update()
+
+
 @ui.page('/options_menu')
 def options_menu():
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
@@ -79,7 +93,9 @@ def blackjack():
 
 @ui.page('/pairs')
 def pairs():
-    card_image = "C:\\dev\\python\\pyCasino\\img\\back@2x.png"
+
+    card_image = "/assets/img/back@2x.png"
+
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
     ui.label('Pairs - Coming Soon').style('color: #FFFFFF;')
     pairs_game = Pairs()
@@ -88,21 +104,26 @@ def pairs():
     random.shuffle(selected_cards)
 
     print("SLC: " + str(selected_cards))
-    with ui.grid(columns=3, rows=4).style(f'height: 25%; width: 25%;').classes('absolute-center, '):
-        for card in selected_cards:
-            with ui.card().tight():
-                img = ui.image(card_image)
-                img.on('click', switch_image(card_image, card, img))
 
-def switch_image(card_image, card, img):
-    if "back" in card_image:
-        card_image = str(card[2])
-        img.set_source(card_image)
-        ui.update()
-    else:
-        card_image = "C:\\dev\\python\\pyCasino\\img\\back@2x.png"
-        img.set_source(card_image)
-        ui.update()
+    def switch_image(c_button, image, c):
+        if image == "/assets/img/back@2x.png":
+            c_button.set_source(c[2])
+            print(c[2])
+        else:
+            c_button.set_source("/assets/img/back@2x.png")
+        ui.update(c_button)
+    with ui.grid(columns=3, rows=4).style(f'height: 25%; width: 25%; column-gap: 10px; row-gap: 10px; ').classes('col-gap-10, row-gap-10;'):
+        for card in selected_cards:
+            with ui.button().classes('row-span-1, h-[272px] ;'):
+                img = ui.image(card_image)
+                img.on('click', lambda ui_img=img, image=card_image, c=card: switch_image(ui_img, image, c))
+
+
+
+
+
+
 
 game_client = GameClient()
+app.add_static_files('/assets/img', 'C:\\dev\\python\\pyCasino\\assets\\img')
 ui.run()
