@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5288b324-c4a4-4e48-91e8-f6e584bd30ee" name="Changes" comment="trashbags">
+    <list default="true" id="5288b324-c4a4-4e48-91e8-f6e584bd30ee" name="Changes" comment="less trash">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/game_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game_core.py" beforeDir="false" afterPath="$PROJECT_DIR$/game_core.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1740140226838</updated>
       <workItem from="1740140227887" duration="26364000" />
-      <workItem from="1740207595692" duration="34311000" />
+      <workItem from="1740207595692" duration="39849000" />
     </task>
     <task id="LOCAL-00001" summary="trash">
       <option name="closed" value="true" />
@@ -88,7 +87,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740231865729</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="less trash">
+      <option name="closed" value="true" />
+      <created>1740245149083</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740245149083</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,10 +104,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="trash" />
     <MESSAGE value="trashbags" />
-    <option name="LAST_COMMIT_MESSAGE" value="trashbags" />
+    <MESSAGE value="less trash" />
+    <option name="LAST_COMMIT_MESSAGE" value="less trash" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pyCasino$game_core.coverage" NAME="game_core Coverage Results" MODIFIED="1740237292886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pyCasino$game_client.coverage" NAME="game_client Coverage Results" MODIFIED="1740244484346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pyCasino$game_client.coverage" NAME="game_client Coverage Results" MODIFIED="1740250521723" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
