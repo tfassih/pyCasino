@@ -83,13 +83,19 @@ m_list = []
 counter = [0]
 timer = {'value': 5}
 game_over_triggered = False
-
+wc = None
+tc = None
 @ui.page('/pairs')
 def pairs():
     global matches
     global card_pair
     global timer
     global game_over_triggered
+    global counter
+    global wc
+    global tc
+    counter = [0]
+    timer = {'value': 5}
     card_image = "/assets/img/back@2x.png"
     images = []
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
@@ -100,13 +106,14 @@ def pairs():
     selected_cards = pairs_game.selected_cards
     print(selected_cards)
     random.shuffle(selected_cards)
-    global counter
+
     print("SLC: " + str(selected_cards))
 
     def switch_image(card_button, card_img, c):
         global counter
         global card_pair
         global timer
+
         if counter[0] < 3:
             new_img = c[2] if card_img == "/assets/img/back@2x.png" else "/assets/img/back@2x.png"
             card_button.set_source(new_img)
@@ -123,8 +130,8 @@ def pairs():
                 card_pair = []
                 counter[0] = 0
 
-    app.timer(1.0, lambda: timer.update(value=timer['value'] - 1))
-    app.timer(1.0, lambda: check_win_condition())
+    tc = app.timer(1.0, lambda: timer.update(value=timer['value'] - 1))
+    wc = app.timer(0.5, lambda: check_win_condition())
 
     with ui.grid(columns=3, rows=4).style(f'height: 25%; width: 25%; column-gap: 10px; row-gap: 10px; ').classes('col-gap-10, row-gap-10;'):
         for card in selected_cards:
@@ -161,14 +168,22 @@ def check_win_condition():
 
 @ui.page('/game_over')
 def game_over():
+    global wc
+    global tc
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
     ui.label('Game Over').style('color: #FFFFFF;')
+    app.timer.cancel(wc)
+    app.timer.cancel(tc)
+    ui.button('Restart', on_click=lambda: ui.navigate.to('/pairs'))
+    ui.button('Main Menu', on_click=lambda: ui.navigate.to('/start_game'))
 
 @ui.page('/win_condition')
 def win_condition():
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
     ui.label('You Win!').style('color: #FFFFFF;')
-
+    app.timer.cancel()
+    ui.button('Restart', on_click=lambda: ui.navigate.to('/pairs'))
+    ui.button('Main Menu', on_click=lambda: ui.navigate.to('/start_game'))
 
 game_client = GameClient()
 app.add_static_files('/assets/img', 'C:\\dev\\python\\pyCasino\\assets\\img')
