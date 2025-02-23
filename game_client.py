@@ -194,6 +194,8 @@ def options_menu():
     ui.separator().style('color: #FFFFFF; background-color: #FFFFFF').classes('absolute-center;')
     ui.label('Blackjack Configuration').style('color: #FFFFFF; font-size: 20px;')
 
+###BLACKJACK###
+
 @ui.page('/blackjack')
 def blackjack():
     blackjack_game = Blackjack()
@@ -203,18 +205,42 @@ def blackjack():
     ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
     ui.label('Blackjack - Coming Soon').style('color: #FFFFFF; font-size: 24px;').classes('absolute-center;')
     ui.separator().style('color: #FFFFFF; background-color: #FFFFFF').classes('absolute-center;')
-    (ui.label(f'Player Score: {player_score}').style('color: #FFFFFF; font-size: 20px;')
-                                            .bind_text_from(blackjack_game,
-                                                            'player_score',
-                                                            lambda value: f'Player Score: {value}'))
+    (ui.label(f'Player Score: {player_score}')
+     .style('color: #FFFFFF; font-size: 20px;')
+     .classes('absolute-center;')
+     .bind_text_from(blackjack_game,
+                    'player_score',
+                     lambda value: f'Player Score: {value}'))
     (ui.label(f'Dealer Score: {dealer_score}').style('color: #FFFFFF; font-size: 20px;')
+                                            .classes('absolute-center;')
                                             .bind_text_from(blackjack_game,
                                                             'dealer_score',
                                                             lambda value: f'Dealer Score: {value}'))
-    (ui.label(f'Current Bet: ${bet}').style('color: #FFFFFF; font-size: 20px;')
+    (ui.label(f'Current Bet: $ {bet}').style('color: #FFFFFF; font-size: 20px;')
                     .bind_text_from(blackjack_game,
                                     'bet',
                                     lambda value: f'Bet: {value}'))
+
+    @ui.page('/blackjack_game_over')
+    def blackjack_game_over():
+        blackjack_game.reset_game()
+        ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
+        with ui.element('div').style('width: 100%; '
+                                     'height: 100%; '
+                                     'position: absolute; '
+                                     'margin: 0;'
+                                     ):
+            ui.label('BLACKJACK GAME OVER').style('color: #FFFFFF; font-size: 20px;').classes('absolute-center;')
+
+    @ui.page('/blackjack_victory')
+    def blackjack_victory():
+        blackjack_game.reset_game()
+        ui.query('body').style(f'background-color: #000000; min-height: 1200px;')
+        with ui.element('div').style('width: 100%; '
+                                     'height: 100%; '
+                                     'position: absolute; '
+        ):
+            ui.label('BLACKJACK VICTORY').style('color: #FFFFFF; font-size: 20px;').classes('absolute-center;')
 
 game_client = GameClient()
 app.add_static_files('/assets/img', 'C:\\dev\\python\\pyCasino\\assets\\img')

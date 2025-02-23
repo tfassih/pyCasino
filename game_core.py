@@ -1,5 +1,7 @@
 import random
 
+from nicegui import ui
+
 
 class Card:
     def __init__(self, suite, value):
@@ -99,7 +101,7 @@ class Deck:
         random.shuffle(self.deck)
         print(list(self.deck))
 
-    def deal_cards(self):
+    def deal_cards(self): ###FOR PAIRS, TODO: RENAME
         num_cards = 52
         matches = 0
         match_list = []
@@ -122,6 +124,10 @@ class Deck:
         self.selected_cards = match_list
         return match_list
 
+    def pop(self):
+        return self.deck.pop()
+
+###PAIRS GAME###
 
 class Pairs:
     def __init__(self):
@@ -129,6 +135,7 @@ class Pairs:
         self.deck.shuffle_deck()
         self.selected_cards = self.deck.deal_cards()
 
+###BLACKJACK GAME###
 
 class Blackjack:
     def __init__(self):
@@ -136,7 +143,7 @@ class Blackjack:
         self.deck.shuffle_deck()
         self.player_hand = []
         self.dealer_hand = []
-        self.bet = []
+        self.bet = 0
         self.player_score = 0
         self.dealer_score = 0
         self.player_bust = False
@@ -157,10 +164,31 @@ class Blackjack:
         self.dealer_split_bust = False
 
     def hit(self):
+        card = self.deck.pop()
         if self.dealer_hit:
-            pass
-        if self.player_hit:
-            pass
+            self.dealer_hand.append(card)
+            if card[1] == "Ace":
+                if self.dealer_score + 11 <= 21:
+                    self.update_score(11)
+                else:
+                    self.update_score(1)
+            elif not card[1].isdigit():
+                self.update_score(10)
+            else:
+                self.update_score(int(card[1]))
+            self.dealer_hit = False
+
+        else:
+            self.player_hand.append(card)
+            if card[1] == "Ace":
+                if self.player_score + 11 <= 21:
+                    self.update_score(11)
+                else:
+                    self.update_score(1)
+            elif not card[1].isdigit():
+                self.update_score(10)
+            else:
+                self.update_score(int(card[1]))
 
     def stand(self):
         if self.dealer_stand:
@@ -177,14 +205,18 @@ class Blackjack:
     def update_score(self, score):
         if self.dealer_score:
             self.dealer_score += score
+            self.update_bust()
         if self.player_score:
             self.player_score += score
+            self.update_bust()
 
     def update_bust(self):
-        if self.dealer_bust or self.dealer_split_bust:
-            pass
-        if self.player_bust or self.player_split_bust:
-            pass
+        if self.dealer_score > 21 or self.dealer_split_score > 21:
+            self.dealer_bust = True
+            return '/blackjack_victory'
+        if self.player_score > 21 or self.player_split_score > 21:
+            self.player_bust = True
+            return '/blackjack_game_over'
 
     def update_blackjack(self):
         if self.dealer_blackjack:
