@@ -122,9 +122,85 @@ class Deck:
         self.selected_cards = match_list
         return match_list
 
+
 class Pairs:
     def __init__(self):
         self.deck = Deck()
         self.deck.shuffle_deck()
         self.selected_cards = self.deck.deal_cards()
+
+
+class Blackjack:
+    def __init__(self):
+        self.deck = Deck()
+        self.deck.shuffle_deck()
+        self.player_hand = []
+        self.dealer_hand = []
+        self.bet = []
+        self.player_score = 0
+        self.dealer_score = 0
+        self.player_bust = False
+        self.dealer_bust = False
+        self.player_blackjack = False
+        self.dealer_blackjack = False
+        self.player_stand = False
+        self.dealer_stand = False
+        self.player_hit = False
+        self.dealer_hit = False
+        self.player_split = False
+        self.dealer_split = False
+        self.player_split_hand = []
+        self.dealer_split_hand = []
+        self.player_split_score = 0
+        self.dealer_split_score = 0
+        self.player_split_bust = False
+        self.dealer_split_bust = False
+
+    def hit(self):
+        if self.dealer_hit:
+            pass
+        if self.player_hit:
+            pass
+
+    def stand(self):
+        if self.dealer_stand:
+            pass
+        if self.player_stand:
+            pass
+
+    def split(self):
+        if self.dealer_split:
+            pass
+        if self.player_split:
+            pass
+
+    def update_score(self, score):
+        if self.dealer_score:
+            self.dealer_score += score
+        if self.player_score:
+            self.player_score += score
+
+    def update_bust(self):
+        if self.dealer_bust or self.dealer_split_bust:
+            pass
+        if self.player_bust or self.player_split_bust:
+            pass
+
+    def update_blackjack(self):
+        if self.dealer_blackjack:
+            pass
+        if self.player_blackjack:
+            pass
+
+    def reset_game(self):
+        self.player_hand = []
+        self.dealer_hand = []
+        self.bet = []
+        self.player_score = 0
+        self.dealer_score = 0
+        self.player_bust = False
+        self.dealer_bust = False
+
+    def update_bet(self, bet):
+        self.bet = bet
 
