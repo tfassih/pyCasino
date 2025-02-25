@@ -99,7 +99,6 @@ class Deck:
 
     def shuffle_deck(self):
         random.shuffle(self.deck)
-        print(list(self.deck))
 
     def deal_cards(self): ###FOR PAIRS, TODO: RENAME
         num_cards = 52
@@ -148,8 +147,6 @@ class Blackjack:
         self.dealer_score = 0
         self.player_bust = False
         self.dealer_bust = False
-        self.player_blackjack = False
-        self.dealer_blackjack = False
         self.player_stand = False
         self.dealer_stand = False
         self.player_hit = False
@@ -167,28 +164,13 @@ class Blackjack:
         card = self.deck.pop()
         if self.dealer_hit:
             self.dealer_hand.append(card)
-            if card[1] == "Ace":
-                if self.dealer_score + 11 <= 21:
-                    self.update_score(11)
-                else:
-                    self.update_score(1)
-            elif not card[1].isdigit():
-                self.update_score(10)
-            else:
-                self.update_score(int(card[1]))
+            self.update_score(card)
             self.dealer_hit = False
 
         else:
             self.player_hand.append(card)
-            if card[1] == "Ace":
-                if self.player_score + 11 <= 21:
-                    self.update_score(11)
-                else:
-                    self.update_score(1)
-            elif not card[1].isdigit():
-                self.update_score(10)
-            else:
-                self.update_score(int(card[1]))
+            self.update_score(card)
+            self.player_hit = False
 
     def stand(self):
         if self.dealer_stand:
@@ -202,13 +184,26 @@ class Blackjack:
         if self.player_split:
             pass
 
-    def update_score(self, score):
-        if self.dealer_score:
-            self.dealer_score += score
-            self.update_bust()
-        if self.player_score:
-            self.player_score += score
-            self.update_bust()
+    def update_score(self, card):
+        card_score = 0
+        if card[1] == "Ace":
+            if (self.player_hit and self.player_score + 11 <= 21) or (self.dealer_hit and self.dealer_score + 11 <= 21):
+                card_score = 11
+            else:
+                card_score = 1
+        elif card[1] == "Jack" or card[1] == "Queen" or card[1] == "King":
+            card_score = 10
+        else:
+            card_score = (int(card[1]))
+        if self.dealer_hit:
+            self.dealer_score += card_score
+        else:
+            self.player_score += card_score
+
+        if self.update_bust() == "/blackjack_victory" or self.update_blackjack() == "/blackjack_victory":
+            ui.navigate.to('/blackjack_victory')
+        elif self.update_bust() == "/blackjack_game_over" or self.update_blackjack() == "/blackjack_game_over":
+            ui.navigate.to('/blackjack_game_over')
 
     def update_bust(self):
         if self.dealer_score > 21 or self.dealer_split_score > 21:
@@ -217,17 +212,37 @@ class Blackjack:
         if self.player_score > 21 or self.player_split_score > 21:
             self.player_bust = True
             return '/blackjack_game_over'
+        return None
 
     def update_blackjack(self):
-        if self.dealer_blackjack:
-            pass
-        if self.player_blackjack:
-            pass
+        if self.dealer_score == 21:
+                return '/blackjack_game_over'
+        if self.player_score == 21:
+                return '/blackjack_victory'
+
+    def dealer_logic(self):
+        if self.dealer_score < 16:
+            self.dealer_hit = True
+            self.hit()
+        elif self.dealer_score >= 17:
+            self.dealer_stand = True
+            self.hit()
+
+    def start_game(self):
+        self.player_hit = True
+        self.hit()
+        self.player_hit = True
+        self.hit()
+        self.dealer_hit = True
+        self.hit()
+        self.dealer_hit = True
+        self.hit()
+
 
     def reset_game(self):
         self.player_hand = []
         self.dealer_hand = []
-        self.bet = []
+        self.bet = 0
         self.player_score = 0
         self.dealer_score = 0
         self.player_bust = False
